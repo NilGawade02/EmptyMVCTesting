@@ -17,6 +17,13 @@ namespace EmptyMVCTesting.Controllers
             return View("UsersHome");
         }
 
+        [HttpPost]
+        [Route("DocUpload")]
+        public string PhotoUpload()
+        {
+            return "True";
+        }
+
         [Route("CreateUser")]
         public ActionResult CreateUser()
         {

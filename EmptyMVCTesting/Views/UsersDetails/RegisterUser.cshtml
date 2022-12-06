@@ -27,7 +27,7 @@
             foreach (var Gender in Model.GenderList)
             {
                 <div class="form-check">
-                    @Html.RadioButtonFor(m => m.U_Gen, Gender.Type, new { id = "rbtn" + Gender.Type })
+                    @Html.RadioButtonFor(m => m.U_Gen, Gender.Type, new { id = "rbtn" + Gender.Type, @class = "form-check-input" })
                     @Html.Label(Gender.Type, new { @for = "rbtn" + Gender.Type })
                 </div>
             }
@@ -52,9 +52,60 @@
         @Html.ValidationMessageFor(m => m.U_Address)
     </div>
 
-    @*<div class="form-group">
-        @Html.LabelFor(m => m.)
-    </div>*@
+    <div class="form-group">
+        @Html.LabelFor(m=>m.U_Indian)
+        @Html.DropDownListFor(m=>m.U_Indian,new SelectList(Model.IndianList, "ID", "Name"), 
+            new {id="drpUIndian",@class= "form-control" })
+    </div>
 
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_Hobbies)
+        @{
+            foreach (var item in Model.HobbyList)
+            {
+                bool chktemp = false;
+                foreach (string str in Model.U_Hobbies)
+                {
+                    if (str == item.Name)
+                    {
+                        chktemp = true;
+                    }
+                }
 
+                <div class="form-check">
+                    @Html.CheckBox("UHobbies", chktemp, new { id = "chkUHobbi"+item.ID, @class = "form-check-input" })
+                    @Html.Label(item.Name, new {@for= "chkUHobbi" + item.ID })
+                </div>
+            }
+        }
+    </div>
+
+    <div class="custom-file">
+        @using (Html.BeginForm("DocUpload", "Users",FormMethod.Post, new {@action= "/Users/DocUpload" }))
+        {
+            @Html.LabelFor(m => m.U_ProfilePic, new { @for = "fileUpDoc", @class = "custom-file-label" })
+            @Html.TextBoxFor(m => m.U_ProfilePic, new { id = "fileUpDoc", type = "file", @class = "custom-file-input" })
+            @Html.TextBox("btnDocUpload", "Upload Document", new { id = "btnUpDoc", type = "submit", 
+                @style = "display: none;", formaction="/Users/DocUpload" })
+        }
+    </div>
 }
+<script>
+    $(document).ready(function () {
+        //$('#fileUpDoc').change(function () {
+        //    console.log("File Selected");
+        //})
+
+        $(".custom-file-input").on("change", function () {
+            console.log("File Selected by class-  ", $(this).val()); //C:\fakepath\Sample.jpg
+            console.log("Details regarding file- ", $('#fileUpDoc').get(0));
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            console.log("data- ", fileName);
+            if (fileName.trim() != '') {
+                console.log("Values- ", fileName);
+                //$('#btnUpDoc').trigger("click");
+            }
+        })
+    });
+</script>

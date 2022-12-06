@@ -18,7 +18,7 @@ namespace EmptyMVCTesting.Models
                 new Gender{ID=3, Type="Transgender" },
             };
 
-            U_Hobbies = new List<Hobby>
+            HobbyList = new List<Hobby>
             {
                 new Hobby{ID=1,Name="Football",Checked=false},
                 new Hobby{ID=2,Name="Hocky",Checked=false},
@@ -31,6 +31,8 @@ namespace EmptyMVCTesting.Models
                 new Indian{ID=1,Name="YES"},
                 new Indian{ID=2,Name="NO"},
             };
+
+            U_Hobbies = new List<string>();
         }
 
         [Required(ErrorMessage = "User ID Is Required!..")]
@@ -54,7 +56,7 @@ namespace EmptyMVCTesting.Models
 
         [Display(Name = "Gender")]
         [Required(ErrorMessage = "Gender Is Required!..")]
-        public Gender U_Gen { get; set; }
+        public int U_Gen { get; set; }
 
         public List<Gender> GenderList { get; set; }
 
@@ -80,19 +82,21 @@ namespace EmptyMVCTesting.Models
         public string U_Address { get; set; }
 
 
-        [Display(Name = "Profile Picture")]
-        [Required(ErrorMessage = "Profile Picture Is Required!..")]
-        public string U_ProfilePic { get; set; }
-
-
         [Display(Name = "Are You Indian?")]
-        public Indian U_Indian { get; set; }
+        public int U_Indian { get; set; }
 
         public List<Indian> IndianList { get; set; }
 
 
         [Display(Name = "Hobbies")]
-        public IList<Hobby> U_Hobbies { get; set; }
+        public IList<string> U_Hobbies { get; set; }
+
+        public IList<Hobby> HobbyList { get; set; }
+
+
+        [Display(Name = "Profile Picture")]
+        [Required(ErrorMessage = "Profile Picture Is Required!..")]
+        public string U_ProfilePic { get; set; }
 
     }
 
