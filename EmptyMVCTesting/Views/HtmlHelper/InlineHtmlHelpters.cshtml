@@ -1,0 +1,55 @@
+﻿@using System.Data;
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>InlineHtmlHelpters</title>
+</head>
+<body>
+    <div>
+        @helper MyDetails(DataTable dt)
+        {
+            if (dt.Rows.Count > 0)
+            {
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                    </tr>
+                    @for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        <tr>
+                            <td>@dt.Rows[i]["ID"].ToString()</td>
+                            <td>@dt.Rows[i]["Name"].ToString()</td>
+                        </tr>
+
+                    }
+                </table>
+            }
+            else
+            {
+                <label>No Data Found</label>
+            }
+        }
+    </div>
+    <div> 
+        <label>DataTable from inner Html helper</label>
+        <!-- Draw back of inline html helpers is this can be only used in this single page only not on other pages -->
+        <div>
+            @{
+                DataTable dt = new DataTable();
+                dt.Columns.Add("ID");
+                dt.Columns.Add("Name");
+
+                for (int i = 0; i <= 50; i++)
+                {
+                    dt.Rows.Add(i + 1, "Anil - " + (i + 1));
+                }
+            }
+            @MyDetails(dt)
+        </div>
+    </div>
+</body>
+</html>

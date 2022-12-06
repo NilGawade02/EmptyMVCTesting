@@ -1,0 +1,60 @@
+﻿@model EmptyMVCTesting.Models.UserDetails
+@{
+    ViewBag.Title = "RegisterUser";
+    Layout = "~/Views/Shared/_LayoutForUsersDetails.cshtml";
+}
+
+<h2>Register User</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_FName, new { @for = "txtUFName" })
+        @Html.TextBoxFor(m => m.U_FName, new { id = "txtUFName", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.U_FName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_LName, new { @for = "txtULName" })
+        @Html.TextBoxFor(m => m.U_LName, new { id = "txtULName", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.U_LName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_Gen, new { @for = "txtUGen" })
+        @{
+            foreach (var Gender in Model.GenderList)
+            {
+                <div class="form-check">
+                    @Html.RadioButtonFor(m => m.U_Gen, Gender.Type, new { id = "rbtn" + Gender.Type })
+                    @Html.Label(Gender.Type, new { @for = "rbtn" + Gender.Type })
+                </div>
+            }
+        }
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_EId, new { @for = "txtUEId" })
+        @Html.TextBoxFor(m => m.U_EId, new { id = "txtUEId", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.U_EId)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_PhNo, new { @for = "txtUPhNo" })
+        @Html.TextBoxFor(m => m.U_PhNo, new { id = "txtUPhNo", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.U_PhNo)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_Address, new { @for = "txtUAddress" })
+        @Html.TextAreaFor(m => m.U_Address, new { id = "txtUAddress", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.U_Address)
+    </div>
+
+    @*<div class="form-group">
+        @Html.LabelFor(m => m.)
+    </div>*@
+
+
+}

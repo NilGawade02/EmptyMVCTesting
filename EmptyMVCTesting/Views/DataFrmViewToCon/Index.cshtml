@@ -1,0 +1,153 @@
+﻿@model EmptyMVCTesting.Models.StronglyDataBind
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Scripts/jquery-3.6.1.min.js"></script>
+    
+</head>
+<body>
+    <div>
+        <h1>Index view of Data From View to Controller</h1>
+        <hr />
+        <section>
+            <h4>Data Transfer From View to Controller Using Parameters</h4>
+            @using (Html.BeginForm("SubmitDataUaingParameters", "DataFrmViewToCon", FormMethod.Post))
+            {
+                @Html.Label("ID", new { @for = "txtID" })<br />
+                @Html.TextBox("ID", null, new { id = "txtID" })
+                <br />
+                @Html.Label("Name", new { @for = "txtName" })<br />
+                @Html.TextBox("Name", null, new { id = "txtName" })
+                <br /><br />
+                @Html.TextBox("Submit", "Submit", new { id = "btnSubmit", type = "submit" })<br /><br />
+            }
+        </section>
+
+        <hr />
+        <section>
+            <h4>Data Transfer From View to Controller Using Request</h4>
+            @using (Html.BeginForm("SubmitDataUaingRequest", "DataFrmViewToCon", FormMethod.Post))
+            {
+                @Html.Label("ID", new { @for = "txtID" })<br />
+                @Html.TextBox("ID", null, new { id = "txtID" })
+                <br />
+                @Html.Label("Name", new { @for = "txtName" })<br />
+                @Html.TextBox("Name", null, new { id = "txtName" })
+                <br /><br />
+                @Html.TextBox("Submit", "Submit", new { id = "btnSubmit", type = "submit" })<br /><br />
+            }
+        </section>
+
+        <hr />
+        <section>
+            <h4>Data Transfer From View to Controller Using Form Collection</h4>
+            @using (Html.BeginForm("SubmitDataUaingFormCollection", "DataFrmViewToCon", FormMethod.Post))
+            {
+                @Html.Label("ID", new { @for = "txtID" })<br />
+                @Html.TextBox("ID", null, new { id = "txtID" })
+                <br />
+                @Html.Label("Name", new { @for = "txtName" })<br />
+                @Html.TextBox("Name", null, new { id = "txtName" })
+                <br /><br />
+                @Html.TextBox("Submit", "Submit", new { id = "btnSubmit", type = "submit" })<br /><br />
+            }
+        </section>
+
+        <hr />
+        <section>
+            <h4>Data Transfer From View to Controller Using Form Strongly Data Type By Model</h4>
+            @using (Html.BeginForm("SubmitDataUaingStronglyBind", "DataFrmViewToCon", FormMethod.Post))
+            {
+                @Html.LabelFor(m => m.ID, new { @for = "txtID" })<br />
+                @Html.TextBoxFor(m => m.ID, null, new { id = "txtID" })
+                <br />
+                @Html.LabelFor(m => m.Name, new { @for = "txtName" })<br />
+                @Html.TextBoxFor(m => m.Name, null, new { id = "txtName" })
+                <br /><br />
+                @Html.TextBox("Submit", "Submit", new { id = "btnSubmit", type = "submit" })<br /><br />
+            }
+        </section>
+
+        <hr />
+        <section>
+            <h4>Data Transfer From View to Controller Using Ajax Call</h4>
+            <form id="AjaxFrm">
+                @Html.LabelFor(m => m.ID, new { @for = "txtID" })<br />
+                @Html.TextBoxFor(m => m.ID, null, new { id = "txtID" })
+                <br />
+                @Html.LabelFor(m => m.Name, new { @for = "txtName" })<br />
+                @Html.TextBoxFor(m => m.Name, null, new { id = "txtName" })
+                <br /><br />
+                @Html.TextBox("Submit", "Submit", new { id = "btnSubmitAjax", type = "button" })<br /><br />
+            </form>
+        </section>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#btnSubmitAjax').click(function () {
+                console.log("Ajax call");
+                var valdata = $("#AjaxFrm").serialize();
+                console.log("Data- ", valdata);
+                var Arraydata = $("#AjaxFrm").serializeArray();
+                console.log("Arrydata- ", Arraydata);
+                var jsondata = JSON.stringify($("#AjaxFrm").serializeArray());
+                console.log("data- ", jsondata);
+                $.ajax({
+                    type: "POST",
+                    url: "/DataFrmViewToCon/SubmitDataUaingAjaxCall/",
+                    data: valdata,
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    dataType: "Json",
+                    success: function (data) {
+                        var NData = JSON.parse(data);
+                        console.log(NData);
+                    },
+                    //failure: function (res) {
+                    //    alert(res);
+                    //},
+                    error: function (data) {
+                        //var NData = JSON.parse(data);
+                        console.log(data);
+                    },
+                })
+                //var valdata = $("#AjaxFrm").serialize();
+                ////var valdata = $("#AjaxFrm");
+                //var JsonData = JSON.stringify(valdata);
+                //console.log("Data- ", valdata, ", JsonData- ", JsonData);
+                //$.ajax({
+                //    url: "/DataFrmViewToCon/SubmitDataUaingAjaxCall/",
+                //    type: "POST",
+                //    data: JSON.parse(JsonData),
+                //    dataType: "application/json",
+
+                //})
+
+                //$.ajax({
+                //    type: "POST",//Request Type
+                //    url: "/DataFrmViewToCon/SubmitDataUaingAjaxCall/",//Controller/Method
+                //    data: '{}',//Parameter and values
+                //    contentType: "application/json; charset=utf-8",//Content Type while hitting 
+                //    dataType: "Json",
+                //    success: function (response) {  // Success Method
+                //        alert(response);
+                //    },
+                //    failure: function (response) {  // Failure Method
+                //        alert(response.responseText);
+                //    },
+                //    error: function (response) {    // Error Method
+                //        alert(response.responseText);
+                //    }
+                //})
+            })
+        })
+    </script>
+</body>
+</html>

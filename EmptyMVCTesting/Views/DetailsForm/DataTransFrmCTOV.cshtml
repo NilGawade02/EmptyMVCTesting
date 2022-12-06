@@ -1,0 +1,57 @@
+﻿@using System.Data;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DataTransFrmCTOV</title>
+</head>
+<body>
+    <div>
+        @helper MyDetails(DataTable dt)
+        {
+            if (dt.Rows.Count > 0)
+            {
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Group</th>
+                    </tr>
+                    @for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        <tr>
+                            <td>@dt.Rows[i]["ID"].ToString()</td>
+                            <td>@dt.Rows[i]["Name"].ToString()</td>
+                            <td>@dt.Rows[i]["Group"].ToString()</td>
+                        </tr>
+
+                    }
+                </table>
+            }
+            else
+            {
+                <label>No Data Found</label>
+            }
+        }
+    </div>
+    <div> 
+        <h1>
+            Data Transfer from Control to View using viewbag and viewdata
+        </h1>
+        <hr />
+        <hr />
+        <h1>Using ViewBag</h1><br />
+        @MyDetails(ViewBag.DT);
+
+        <hr />
+        <hr />
+        <h1>Using ViewData</h1><br />
+        @MyDetails((DataTable)ViewData["DT"]);
+    </div>
+</body>
+</html>

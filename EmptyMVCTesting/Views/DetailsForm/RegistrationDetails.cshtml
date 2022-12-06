@@ -1,0 +1,275 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <title>RegistrationDetails</title>
+    <script type="text/javascript">
+        function Validate() {
+            console.log("HII Validation");
+            var Msg = "";
+            var ErrorFlag = false;
+            var i = 1;
+            //var element = document.getElementById('txtFname');
+            //var str = "";
+            //if (element != null) {
+            //    str = element.value;
+            //}
+            //else {
+            //    str = "No Value";
+            //}
+            //console.log("field- ", str);
+
+            var FName, LName, EmailId, PhoneNo, DOB, Gender, MGender, FGender, TGender, Indian, Hobbies, VHobbies, PHobbies;
+
+            FName = document.getElementById("txtFname") == null ? "" : document.getElementById("txtFname").value;
+            LName = document.getElementById("txtLname") == null ? "" : document.getElementById("txtLname").value;
+            EmailId = document.getElementById("txtEid") == null ? "" : document.getElementById("txtEid").value;
+            PhoneNo = document.getElementById("txtPNo") == null ? "" : document.getElementById("txtPNo").value;
+            DOB = document.getElementById("txtDOB") == null ? "" : document.getElementById("txtDOB").value;
+            Gender = document.getElementById("Gender") == null ? "" : document.getElementById("Gender").value;
+            MGender = document.getElementById("chkMale") == null ? false : document.getElementById("chkMale").checked;
+            FGender = document.getElementById("chkFemale") == null ? false : document.getElementById("chkFemale").checked;
+            TGender = document.getElementById("chkTransgender") == null ? false : document.getElementById("chkTransgender").checked;
+            Indian = document.getElementById("drpIndian") == null ? "" : document.getElementById("drpIndian").value;
+            Hobbies = document.getElementById("Hobbies") == null ? "" : document.getElementById("Hobbies").value;
+            VHobbies = document.getElementById("chkVGames") == null ? false : document.getElementById("chkVGames").checked;
+            PHobbies = document.getElementById("chkPGames") == null ? false : document.getElementById("chkPGames").checked;
+
+            console.log("FName- ", FName, " LName- ", LName, ", DOB- ", DOB, " Gender- Male- ", MGender, " Female- ", FGender
+                , " TGender- ", TGender, " Indian- ", Indian, " VHobbies- ", VHobbies, " PHobbies- ", PHobbies);
+
+            emailExp = /^([a-zA-Z0-9_\.\-])+\@@(([a-zA-Z0-9\-])+\.)+([com\co\.\in])+$/;
+
+            if (FName == '' && FName.trim() == '') {
+                Msg += (i++) + ". First Name is Required \n";
+                ErrorFlag = true;
+            }
+
+            if (LName == '' && LName.trim() == '') {
+                Msg += (i++) + ". Last Name is Required \n";
+                ErrorFlag = true;
+            }
+
+            if (EmailId == '' && EmailId.trim() == '') {
+                Msg += (i++) + ". Email ID is Required \n";
+                ErrorFlag = true;
+            }
+            else if (!EmailId.match(emailExp)) {
+                Msg += (i++) + ". Invalid Email Id \n";
+                ErrorFlag = true;
+            }
+
+            if (PhoneNo == '' && PhoneNo.trim() == '') {
+                Msg += (i++) + ". Phone No is Required \n";
+                ErrorFlag = true;
+            }
+            else if (PhoneNo.length != 10) {
+                Msg += (i++) + ". Phone number must be 10 Digit \n";
+                ErrorFlag = true;
+            }
+
+            if (DOB == '' && DOB.trim() == '') {
+                Msg += (i++) + ". Date of Birth is Required \n";
+                ErrorFlag = true;
+            }
+            else if (DOB < '12/03/2022') {
+                Msg += (i++) + ". Date should not be less then 12/03/2022 \n";
+                ErrorFlag = true;
+            }
+
+            if (MGender == false && FGender == false && TGender == false) {
+                Msg += (i++) + ". Gender is Required \n";
+                ErrorFlag = true;
+            }
+
+            if (Indian == '' && Indian.trim() == '') {
+                Msg += (i++) + ". Are you Indian is Required \n";
+                ErrorFlag = true;
+            }
+            else if (Indian == 'S') {
+                Msg += (i++) + ". Need to Select YES / NO As a Indian is Required \n";
+                ErrorFlag = true;
+            }
+
+            if (VHobbies == false && PHobbies == false) {
+                Msg += (i++) + ". Hobbies are Required \n";
+                ErrorFlag = true;
+            }
+
+            if (ErrorFlag) {
+                alert(Msg);
+            }
+            else
+                alert("Everything working fine");
+
+            return true;
+        }
+    </script>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        <div class="container">
+            <br />
+            <h2>Enquiry Details</h2>
+            <br />
+            <br />
+            <div class="form-group">
+                @Html.Label("First Name: ", new { id = "lblFirstName" })
+                @Html.TextBox("txtFirstName", null, new { id = "txtFname", @class = "form-control" })@*, placeholder = "First Name" })*@
+            </div>
+            <div class="form-group">
+                @Html.Label("Last Name: ", new { id = "lblLastName" })
+                @Html.TextBox("txtLName", null, new { id = "txtLname", @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.Label("Email ID: ", new { id = "lblEmailId" })
+                @Html.TextBox("txtEmailID", null, new { id = "txtEid", @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.Label("Phone No: ", new { id = "lblPhoneNo" })
+                @Html.TextBox("txtPhoneNo", null, new
+                {
+                    id = "txtPNo",
+                    @class = "form-control",
+                    type = "number",
+                    onInput = "this.value = this.value.slice(0,10)"
+                })
+            </div>
+            <div class="form-group">
+                @Html.Label("Date Of Birth: (MM/DD/YYYY)")
+                @Html.TextBox("txtDOB", null, new { id = "txtDOB", @class = "form-control DOB", @readonly = true })
+            </div>
+            <div class="form-group">
+                @Html.Label("Gender:")
+                <div class="form-check">
+                    @Html.RadioButton("Gender", "M", new { id = "chkMale", text = "Male", @class = "form-check-input Gender" })
+                    @Html.Label("Male", new { @for = "chkMale" })
+                </div>
+                <div class="form-check">
+                    @Html.RadioButton("Gender", "F", new { id = "chkFemale", text = "Female", @class = "form-check-input Gender" })
+                    @Html.Label("Female", new { @for = "chkFemale" })
+                </div>
+                <div class="form-check">
+                    @Html.RadioButton("Gender", "T", new { id = "chkTransgender", text = "Transgender", @class = "form-check-input Gender" })
+                    @Html.Label("Transgender", new { @for = "chkTransgender" })
+                </div>
+            </div>
+            @{
+                List<SelectListItem> objItems = new List<SelectListItem>(){
+                    new SelectListItem { Text = "Select", Value = "S", Selected = true },
+                    new SelectListItem { Text = "YES", Value = "Y" },
+                    new SelectListItem { Text = "NO", Value = "N" },
+                };
+                ViewBag.ListItem = objItems;
+            }
+            <div class="form-group">
+                @Html.Label("Are You Indian:")
+                @Html.DropDownList("ListItem", null, new { id = "drpIndian", @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Hobbies:")
+                <div class="form-check">
+                    @Html.CheckBox("Hobbies", false, new { id = "chkVGames", @class = "form-check-input" })
+                    @Html.Label("Virtual Games", new { @for = "chkVGames" })
+                </div>
+                <div class="form-check">
+                    @Html.CheckBox("Hobbies", false, new { id = "chkPGames", @class = "form-check-input" })
+                    @Html.Label("Physical Games", new { @for = "chkPGames" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Upload Document:")<br />
+                @Html.TextBox("uploadDoc", null, new { id = "updoc", type = "file" })
+                @Html.TextBox("btnDocUpload", "Document Upload", new
+                {
+                    id = "btnUpDoc",
+                    type = "button",
+                    onclick = "btnUpDocClick()",
+                    @class = "btn btn-primary"
+                })
+            </div>
+
+            <div class="form-group">
+                @Html.TextBox("btnSubmitdata", "Submit data", new
+                {
+                    id = "btnSubmit",
+                    type = "button",
+                    onclick = "btnSubmit1()",
+                    @class = "btn btn-primary",
+                    disabled = true
+                })
+            </div>
+        </div>
+    }
+    <div>
+    </div>
+    <script>
+        $(Document).ready(function () {
+            $(".DOB").datepicker();
+            $(".Gender").change(function () {
+                var value = $(this).val();
+                console.log("MaleFemale", value);
+                if (value == 'T') {
+                    $('#btnSubmit').attr('disabled', true);
+                }
+                else if (value == 'M' || value == 'F') {
+                    $('#btnSubmit').attr('disabled', false);
+                }
+            })
+
+            $("input[type='radio'][name='Gender']").change(function () {
+                var value = $(this).val();
+                console.log("Using Name of Radio", value);
+                if (value == 'T') {
+                    $("input[type='button'][name='btnSubmitdata']").attr('disabled', true);
+                }
+                else if (value == 'M' || value == 'F') {
+                    $("input[type = 'button'][name = 'btnSubmitdata']").attr('disabled', false);
+                }
+            })
+        });
+
+        //$(Document).ready(function () {
+        //    $("input[type='radio'][name='theme']").change(function () {
+        //        var value = $(this).val();
+        //        console.log("MaleFemale",value);
+        //        if ($(this).val() == 'M') {
+        //            alert("You selected the first option and deselected the second one");
+        //            console.log("MaleFemale");
+        //        } else if ($(this).val() == 'F') {
+        //            alert("You selected the second option and deselected the first one");
+        //        } else if ($(this.val() == 'T'){
+
+        //        })
+        //    });
+        //});
+
+        function btnSubmit1() {
+            console.log("btnSubmitClick");
+            var vali = Validate();
+        };
+
+        function btnUpDocClick() {
+            console.log("btnUpDocClick");
+        };
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+</body>
+</html>
