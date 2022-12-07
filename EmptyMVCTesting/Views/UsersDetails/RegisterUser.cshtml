@@ -7,7 +7,7 @@
 <h2>Register User</h2>
 <hr />
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("RegisterUser", "Users", FormMethod.Post))
 {
     <div class="form-group">
         @Html.LabelFor(m => m.U_FName, new { @for = "txtUFName" })
@@ -53,41 +53,70 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(m=>m.U_Indian)
-        @Html.DropDownListFor(m=>m.U_Indian,new SelectList(Model.IndianList, "ID", "Name"), 
-            new {id="drpUIndian",@class= "form-control" })
+        @Html.LabelFor(m => m.U_Indian)
+        @Html.DropDownListFor(m => m.U_Indian, new SelectList(Model.IndianList, "ID", "Name"),
+            new { id = "drpUIndian", @class = "form-control" })
     </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(m => m.U_Hobbies)
+            @{
+                foreach (var item in Model.HobbyList)
+                {
+                    bool chktemp = false;
+                    foreach (string str in Model.U_Hobbies)
+                    {
+                        if (str == item.Name)
+                        {
+                            chktemp = true;
+                        }
+                    }
+
+                    <div class="form-check">
+                        @Html.CheckBox("UHobbies", chktemp, new { id = "chkUHobbi" + item.ID, @class = "form-check-input" })
+                        @Html.Label(item.Name, new { @for = "chkUHobbi" + item.ID })
+                    </div>
+                }
+            }
+        </div>*@
 
     <div class="form-group">
         @Html.LabelFor(m => m.U_Hobbies)
         @{
-            foreach (var item in Model.HobbyList)
+            for (int i = 0; i < Model.HobbyList.Count; i++)
             {
-                bool chktemp = false;
-                foreach (string str in Model.U_Hobbies)
-                {
-                    if (str == item.Name)
-                    {
-                        chktemp = true;
-                    }
-                }
-
-                <div class="form-check">
-                    @Html.CheckBox("UHobbies", chktemp, new { id = "chkUHobbi"+item.ID, @class = "form-check-input" })
-                    @Html.Label(item.Name, new {@for= "chkUHobbi" + item.ID })
-                </div>
+                @Html.HiddenFor(m => m.HobbyList[i].ID)
+                @Html.CheckBoxFor(m => m.HobbyList[i].Checked)
+                @Html.LabelFor(m => m.HobbyList[i].Checked, Model.HobbyList[i].Name)
             }
         }
     </div>
 
+    @*<div class="custom-file">
+            @using (Html.BeginForm("DocUpload", "Users", FormMethod.Post, new { @action = "/Users/DocUpload" }))
+            {
+                @Html.LabelFor(m => m.U_ProfilePic, new { @for = "fileUpDoc", @class = "custom-file-label" })
+                @Html.TextBoxFor(m => m.U_ProfilePic, new { id = "fileUpDoc", type = "file", @class = "custom-file-input" })
+                @Html.TextBox("btnDocUpload", "Upload Document", new
+                {
+                    id = "btnUpDoc",
+                    type = "submit",
+                    @style = "display: none;",
+                    formaction = "/Users/DocUpload"
+                })
+            }
+        </div>*@
+
     <div class="custom-file">
-        @using (Html.BeginForm("DocUpload", "Users",FormMethod.Post, new {@action= "/Users/DocUpload" }))
-        {
-            @Html.LabelFor(m => m.U_ProfilePic, new { @for = "fileUpDoc", @class = "custom-file-label" })
-            @Html.TextBoxFor(m => m.U_ProfilePic, new { id = "fileUpDoc", type = "file", @class = "custom-file-input" })
-            @Html.TextBox("btnDocUpload", "Upload Document", new { id = "btnUpDoc", type = "submit", 
-                @style = "display: none;", formaction="/Users/DocUpload" })
-        }
+        @Html.LabelFor(m => m.U_ProfilePic, new { @for = "fileUpDoc", @class = "custom-file-label" })
+        @Html.TextBoxFor(m => m.U_ProfilePic, new { id = "fileUpDoc", type = "file", @class = "custom-file-input" })
+        @Html.TextBox("btnDocUpload", "Upload Document", new { id = "btnUpDoc", type = "button", @style = "display:none;" })
+    </div>
+
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.TextBox("Submit", "Register User", new { id = "btnSubmit", type = "submit", @class = "btn btn-outline-primary" })<br /><br />
     </div>
 }
 <script>
@@ -104,7 +133,48 @@
             console.log("data- ", fileName);
             if (fileName.trim() != '') {
                 console.log("Values- ", fileName);
-                //$('#btnUpDoc').trigger("click");
+                $('#btnUpDoc').trigger("click");
+            }
+        });
+
+        $('#btnUpDoc').click(function () {
+            console.log("BtnUpDoc Click...");
+            if (window.FormData !== undefined) {
+                console.log("BtnUpDoc Click with form data");
+                var fileUpload = $("#fileUpDoc").get(0);
+                console.log("File Uploaded- ", fileUpload);
+                var files = fileUpload.files
+                console.log("Files- ", files);
+
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                // Adding one more key to FormData object
+                fileData.append('username', 'Anil');
+                console.log("FormData- ", fileData);
+
+                $.ajax({
+                    url: '/Users/DocUpload',
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    success: function (result) {
+                        alert(result);
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+
+
+            } else {
+                alert("FormData is not supported.");
             }
         })
     });
