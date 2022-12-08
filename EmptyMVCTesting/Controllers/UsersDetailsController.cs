@@ -81,7 +81,7 @@ namespace EmptyMVCTesting.Controllers
 
         [HttpPost]
         [Route("RegisterUser")]
-        public ActionResult CreateUser(FormCollection form)
+        public ActionResult CreateUser(FormCollection form, UserDetails UD)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace EmptyMVCTesting.Controllers
                 var U_Hobbies = form["U_Hobbies"];
                 var HobbyList = form["HobbyList"];
             }
-            return View("RegisterUser");
+            return View("RegisterUser",UD);
         }
     }
 }

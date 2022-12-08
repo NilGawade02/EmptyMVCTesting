@@ -85,9 +85,11 @@
         @{
             for (int i = 0; i < Model.HobbyList.Count; i++)
             {
-                @Html.HiddenFor(m => m.HobbyList[i].ID)
-                @Html.CheckBoxFor(m => m.HobbyList[i].Checked)
-                @Html.LabelFor(m => m.HobbyList[i].Checked, Model.HobbyList[i].Name)
+                <div class="form-check">
+                    @Html.HiddenFor(m => m.HobbyList[i].ID)
+                    @Html.CheckBoxFor(m => m.HobbyList[i].Checked, new { @class = "form-check-input" })
+                    @Html.LabelFor(m => m.HobbyList[i].Name, Model.HobbyList[i].Name)
+                </div>
             }
         }
     </div>
