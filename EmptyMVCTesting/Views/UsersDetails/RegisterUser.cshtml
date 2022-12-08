@@ -27,11 +27,12 @@
             foreach (var Gender in Model.GenderList)
             {
                 <div class="form-check">
-                    @Html.RadioButtonFor(m => m.U_Gen, Gender.Type, new { id = "rbtn" + Gender.Type, @class = "form-check-input" })
-                    @Html.Label(Gender.Type, new { @for = "rbtn" + Gender.Type })
+                    @Html.RadioButtonFor(m => m.U_Gen, Gender.ID, new { id = "rbtn" + Gender.Type, @class = "form-check-input" })
+                    @Html.Label(Gender.Type, new { @for = "rbtn" + Gender.Type})
                 </div>
             }
         }
+        @Html.ValidationMessageFor(m=>m.U_Gen)
     </div>
 
     <div class="form-group">
@@ -56,6 +57,7 @@
         @Html.LabelFor(m => m.U_Indian)
         @Html.DropDownListFor(m => m.U_Indian, new SelectList(Model.IndianList, "ID", "Name"),
             new { id = "drpUIndian", @class = "form-control" })
+        @Html.ValidationMessageFor(m=>m.U_Indian)
     </div>
 
     @*<div class="form-group">
@@ -85,11 +87,15 @@
         @{
             for (int i = 0; i < Model.HobbyList.Count; i++)
             {
-                @Html.HiddenFor(m => m.HobbyList[i].ID)
-                @Html.CheckBoxFor(m => m.HobbyList[i].Checked)
-                @Html.LabelFor(m => m.HobbyList[i].Checked, Model.HobbyList[i].Name)
+                <div class="form-check">
+                    @Html.HiddenFor(m => m.HobbyList[i].ID)
+                    @Html.HiddenFor(m => m.HobbyList[i].Name)
+                    @Html.CheckBoxFor(m => m.HobbyList[i].Checked, new {id="chkUHobbie"+ Model.HobbyList[i].ID })
+                    @Html.LabelFor(m => m.HobbyList[i], Model.HobbyList[i].Name, new { @for = "chkUHobbie" + Model.HobbyList[i].ID })
+                </div>
             }
         }
+        @Html.ValidationMessageFor(m=>m.U_Hobbies)
     </div>
 
     @*<div class="custom-file">
@@ -109,8 +115,10 @@
 
     <div class="custom-file">
         @Html.LabelFor(m => m.U_ProfilePic, new { @for = "fileUpDoc", @class = "custom-file-label" })
+        @Html.HiddenFor(m => m.U_ProfilePic, new {id="hiddenUProfilePic"})
         @Html.TextBoxFor(m => m.U_ProfilePic, new { id = "fileUpDoc", type = "file", @class = "custom-file-input" })
         @Html.TextBox("btnDocUpload", "Upload Document", new { id = "btnUpDoc", type = "button", @style = "display:none;" })
+        @Html.ValidationMessageFor(m=>m.U_ProfilePic)
     </div>
 
     <br />
@@ -165,7 +173,13 @@
                     processData: false, // Not to process data
                     data: fileData,
                     success: function (result) {
-                        alert(result);
+                        console.log(result);
+                        if (result.includes('Docs/')) {
+                            var index = result.search("Docs/");
+                            result = '../' + result.substring(index)
+                        }
+                        console.log("result- ", result);
+                        $('#hiddenUProfilePic').val(result);
                     },
                     error: function (err) {
                         alert(err.statusText);
