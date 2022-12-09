@@ -28,20 +28,22 @@ namespace EmptyMVCTesting.Controllers
         string U_ProfilePic=string.Empty;
         #endregion
 
-        public UsersDetailsController()
-        {
-            if (TempData["UserDetailsTable"] == null)
-            {
-                UserDetailsTableColumns();//For Table Structure
-                //UserDetailsTableColumnsValues();//For Sample Data Pass Parameters to it
+        #region Commented TempData because of some issue by Anil
+        //public UsersDetailsController()
+        //{
+        //    if (TempData["UserDetailsTable"] == null)
+        //    {
+        //        UserDetailsTableColumns();//For Table Structure
+        //        //UserDetailsTableColumnsValues();//For Sample Data Pass Parameters to it
 
-                UserDetailsTableColumnsValuesDef();//For Testing Sample data
+        //        UserDetailsTableColumnsValuesDef();//For Testing Sample data
 
-                TempData["UserDetailsTable"] = dt;
-            }
-            else
-                dt = (DataTable)TempData.Peek("UserDetailsTable");
-        }
+        //        TempData["UserDetailsTable"] = dt;
+        //    }
+        //    else
+        //        dt = (DataTable)TempData.Peek("UserDetailsTable");
+        //} 
+        #endregion
 
         public void UserDetailsTableColumns()
         {
@@ -59,6 +61,7 @@ namespace EmptyMVCTesting.Controllers
             dt.Columns.Add("U_Hobbies", typeof(string));
             dt.Columns.Add("U_ProfilePic", typeof(string));
         }
+
         public void UserDetailsTableColumnsValues(string U_FName, string U_LName, int U_Gen, string U_EId, string U_PhNo, 
             string U_Address, int U_Indian, string U_Hobbies, string U_ProfilePic)
         {
@@ -91,6 +94,7 @@ namespace EmptyMVCTesting.Controllers
         [Route("Home")]
         public ActionResult Index()
         {
+            #region Commented TempData because of some issue by Anil
             //if (TempData["UserDetailsTable"] == null)
             //{
             //    UserDetailsTableColumns();//For Table Structure
@@ -101,7 +105,19 @@ namespace EmptyMVCTesting.Controllers
             //    TempData["UserDetailsTable"] = dt;
             //}
             //else
-            //    dt = (DataTable)TempData.Peek("UserDetailsTable");
+            //    dt = (DataTable)TempData.Peek("UserDetailsTable"); 
+            #endregion
+
+            if (Session["UserDetailsTable"] == null)
+            {
+                UserDetailsTableColumns();//For Table Structure
+                //UserDetailsTableColumnsValues();//For Sample Data Pass Parameters to it
+                UserDetailsTableColumnsValuesDef();//For Testing Sample data
+
+                Session["UserDetailsTable"] = dt;
+            }
+            else
+                dt = (DataTable)Session["UserDetailsTable"];
 
             return View("UsersHome");
         }
@@ -110,13 +126,15 @@ namespace EmptyMVCTesting.Controllers
         [Route("DocUpload")]
         public ActionResult PhotoUpload()
         {
+            #region Commented TempData because of some issue by Anil
             //dt = (DataTable)TempData.Peek("UserDetailsTable");
 
             //if(dt == null)
             //{
             //    UserDetailsTableColumns();
             //    TempData["UserDetailsTable"] = dt;
-            //}
+            //} 
+            #endregion
 
             if (Request.Files.Count > 0)
             {
@@ -168,20 +186,20 @@ namespace EmptyMVCTesting.Controllers
             }
             else
                 return Json("No files selected.");
-            //Resquest
-            //return "True";
         }
 
         [Route("CreateUser")]
         public ActionResult CreateUser()
         {
+            #region Commented TempData because of some issue by Anil
             //dt = (DataTable)TempData.Peek("UserDetailsTable");
 
             //if (dt == null)
             //{
             //    UserDetailsTableColumns();
             //    TempData["UserDetailsTable"] = dt;
-            //}
+            //} 
+            #endregion
 
             UserDetails UD = new UserDetails();
 
@@ -192,13 +210,23 @@ namespace EmptyMVCTesting.Controllers
         [Route("RegisterUser")]
         public ActionResult CreateUser(UserDetails UD)
         {
+            #region Commented TempData because of some issue by Anil
             //dt = (DataTable)TempData.Peek("UserDetailsTable");
 
             //if (dt == null)
             //{
             //    UserDetailsTableColumns();
             //    TempData["UserDetailsTable"] = dt;
-            //}
+            //} 
+            #endregion
+
+            if (Session["UserDetailsTable"] == null)
+            {
+                UserDetailsTableColumns();
+
+            }
+            else
+                dt = (DataTable)Session["UserDetailsTable"];
 
             if (ModelState.IsValid)
             {
@@ -227,7 +255,8 @@ namespace EmptyMVCTesting.Controllers
                 }
 
                 UserDetailsTableColumnsValues(U_FName, U_LName, U_Gen, U_EId, U_PhNo, U_Address, U_Indian, U_Hobbies, U_ProfilePic);
-                TempData["UserDetailsTable"] = dt;
+                //TempData["UserDetailsTable"] = dt;//Commented TempData because of some issue by Anil
+                Session["UserDetailsTable"] = dt;
 
                 return RedirectToAction("Home", "Users");
             }
