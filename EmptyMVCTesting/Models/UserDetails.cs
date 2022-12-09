@@ -32,7 +32,7 @@ namespace EmptyMVCTesting.Models
                 new Indian{ID=2,Name="NO"},
             };
 
-            U_Hobbies = new List<string>();
+            //U_Hobbies = new List<string>();
         }
 
         [Required(ErrorMessage = "User ID Is Required!..")]
@@ -89,7 +89,8 @@ namespace EmptyMVCTesting.Models
 
 
         [Display(Name = "Hobbies")]
-        public IList<string> U_Hobbies { get; set; }
+        public string U_Hobbies { get; set; }
+        //public IList<string> U_Hobbies { get; set; }
 
         public IList<Hobby> HobbyList { get; set; }
 
