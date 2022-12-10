@@ -73,7 +73,13 @@ namespace EmptyMVCTesting.Controllers
         public void UserDetailsTableColumnsValuesDef()
         {
             dt.Rows.Add(null, "Anil", "Gawade", 1, "anil@vieva.in", "9757203681", "Powai,Mumbai 400072",
-                    2, "Games", "Football,Cricket,Video Games");
+                    2, "Football,Cricket,Video Games", "/Docs/UploadsDocs/Sample.jpg");
+
+            dt.Rows.Add(null, "Nil", "Gawade", 2, "nil@vieva.in", "9757203681", "Powai,Mumbai 400072",
+                    1, "Hocky,Cricket,Video Games", "/Docs/UploadsDocs/Sample.jpg");
+
+            dt.Rows.Add(null, "Hru", "", 2, "hru@vieva.in", "9757203681", "Powai,Mumbai 400072",
+                    1, "Cricket,Video Games", "/Docs/UploadsDocs/Sample.jpg");
 
             #region Commented
             //DataRow dr = dt.NewRow();
@@ -283,29 +289,15 @@ namespace EmptyMVCTesting.Controllers
                 dt = (DataTable)Session["UserDetailsTable"];
 
             DataTable AllUsersDt=new DataTable();
-            AllUsersDt.Columns.Add("UsersID", typeof(int));
-            AllUsersDt.Columns.Add("UsersFullName", typeof(string));
-            AllUsersDt.Columns.Add("UsersGender", typeof(string));
-            AllUsersDt.Columns.Add("UsersEmailID", typeof(string));
-            AllUsersDt.Columns.Add("UsersPhoneNo", typeof(string));
-            AllUsersDt.Columns.Add("UsersAddress", typeof(string));
-            AllUsersDt.Columns.Add("UsersIsIndian", typeof(string));
-            AllUsersDt.Columns.Add("UsersHobbies", typeof(List<string>));
-            AllUsersDt.Columns.Add("UsersProfilePic", typeof(string));
-
-            //dt.Columns.Add("U_ID", typeof(int));
-            //dt.Columns["U_ID"].AutoIncrement = true;
-            //dt.Columns["U_ID"].AutoIncrementSeed = 1; dt.Columns["U_ID"].AutoIncrementStep = 1;
-
-            //dt.Columns.Add("U_FName", typeof(string));
-            //dt.Columns.Add("U_LName", typeof(string));
-            //dt.Columns.Add("U_Gen", typeof(int));
-            //dt.Columns.Add("U_EId", typeof(string));
-            //dt.Columns.Add("U_PhNo", typeof(string));
-            //dt.Columns.Add("U_Address", typeof(string));
-            //dt.Columns.Add("U_Indian", typeof(int));
-            //dt.Columns.Add("U_Hobbies", typeof(string));
-            //dt.Columns.Add("U_ProfilePic", typeof(string));
+            AllUsersDt.Columns.Add("ID", typeof(int));
+            AllUsersDt.Columns.Add("Profile Picture", typeof(string));
+            AllUsersDt.Columns.Add("Name", typeof(string));
+            AllUsersDt.Columns.Add("Gender", typeof(string));
+            AllUsersDt.Columns.Add("Email ID", typeof(string));
+            AllUsersDt.Columns.Add("Phone Number", typeof(string));
+            AllUsersDt.Columns.Add("Address", typeof(string));
+            AllUsersDt.Columns.Add("Indian", typeof(string));
+            AllUsersDt.Columns.Add("Hobbies", typeof(List<string>));
 
             if (dt!= null)
                 foreach (DataRow dr in dt.Rows)
@@ -315,34 +307,34 @@ namespace EmptyMVCTesting.Controllers
                     string UsersIsIndian=string.Empty;
                     List<string> Hobbies=new List<string>();
 
-                    UsersDet["UsersID"] = (int)dr["U_ID"];
-                    UsersDet["UsersFullName"] = dr["U_FName"].ToString().Trim() +" "+ dr["U_LName"].ToString().Trim();
-                    //UsersDet["UsersGender"] = (int)dr["U_Gen"];
-                    UsersDet["UsersEmailID"] = dr["U_EId"];
-                    UsersDet["UsersPhoneNo"] = dr["U_PhNo"];
-                    UsersDet["UsersAddress"] = dr["U_Address"];
-                    //UsersDet["UsersIsIndian"] = dr["U_Indian"];
-                    //UsersDet["UsersHobbies"] = dr["U_Hobbies"];
-                    UsersDet["UsersProfilePic"] = dr["U_ProfilePic"];
+                    UsersDet["ID"] = (int)dr["U_ID"];
+                    UsersDet["Name"] = dr["U_FName"].ToString().Trim() +" "+ dr["U_LName"].ToString().Trim();
+                    //UsersDet["Gender"] = (int)dr["U_Gen"];
+                    UsersDet["Email ID"] = dr["U_EId"];
+                    UsersDet["Phone Number"] = dr["U_PhNo"];
+                    UsersDet["Address"] = dr["U_Address"];
+                    //UsersDet["Indian"] = dr["U_Indian"];
+                    //UsersDet["Hobbies"] = dr["U_Hobbies"];
+                    UsersDet["Profile Picture"] = dr["U_ProfilePic"];
                     
                     foreach(Gender str in UD.GenderList)
                     {
                         if (((int)(dr["U_Gen"]) == str.ID))
                             UsersGender = str.Type;
                     }
-                    UsersDet["UsersGender"] = UsersGender;
+                    UsersDet["Gender"] = UsersGender;
 
                     foreach (Indian str in UD.IndianList)
                     {
                         if (((int)dr["U_Indian"]) == str.ID)
                             UsersIsIndian = str.Name;
                     }
-                    UsersDet["UsersIsIndian"] = UsersIsIndian;
+                    UsersDet["Indian"] = UsersIsIndian;
 
                     string U_Hobbies = dr["U_Hobbies"].ToString();
                     Hobbies = U_Hobbies.Split(',').ToList();
 
-                    UsersDet["UsersHobbies"]=Hobbies;
+                    UsersDet["Hobbies"] =Hobbies;
 
                     AllUsersDt.Rows.Add(UsersDet);
 
@@ -352,6 +344,53 @@ namespace EmptyMVCTesting.Controllers
                 
 
             return View("UsersDetails");
+        }
+
+        [Route("EditUser/{ID}")]
+        public ActionResult EditUser(int ID)
+        {
+            if (Session["UserDetailsTable"] != null)
+                dt = (DataTable)Session["UserDetailsTable"];
+            else
+                return RedirectToAction("AllUsers", "Users");
+
+            dt.AcceptChanges();
+
+            DataRow dr = dt.AsEnumerable().FirstOrDefault(x => x.Field<int>("U_ID") == ID);
+
+            
+            Session["UserDetailsTable"] = dt;
+
+            return View("EditUserDetails");
+        }
+
+        [HttpPost]
+        [Route("UpdateUser/{ID}")]
+        public ActionResult EditUserDetails(UserDetails UD)
+        {
+            return View();
+        }
+
+        //[HttpPost]
+        [Route("DeleteUser/{ID}")]
+        public ActionResult DelUser(int ID)
+        {
+            if(Session["UserDetailsTable"] != null)
+                dt = (DataTable)Session["UserDetailsTable"];
+            else
+                return RedirectToAction("AllUsers", "Users");
+
+            dt.AcceptChanges();
+            foreach(DataRow dr in dt.Rows)
+            {
+                if (((int)dr["U_ID"]) == ID)
+                    dr.Delete();
+            }
+            dt.AcceptChanges();
+
+            Session["UserDetailsTable"] = dt;
+
+            return RedirectToAction("AllUsers", "Users");
         }
     }
 }

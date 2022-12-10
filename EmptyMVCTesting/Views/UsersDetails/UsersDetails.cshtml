@@ -1,4 +1,4 @@
-﻿
+﻿@using System.Data;
 @{
     ViewBag.Title = "UsersDetails";
     Layout = "~/Views/Shared/_LayoutForUsersDetails.cshtml";
@@ -15,7 +15,112 @@
     }
 </style>
 <h2>UsersDetails</h2>
-<table class="table table-hover">
+@{
+    DataTable dt = new DataTable();
+    dt = ViewBag.AllUsersDt == null ? null : ViewBag.AllUsersDt;
+    if (dt.Rows.Count <= 0)
+    {
+        <h4>No Record Found</h4>
+    }
+    else
+    {
+        if (dt.Rows.Count > 0)
+        {
+            dt.Columns.Add("Edit");
+            dt.Columns.Add("Delete");
+            string[] theads = dt.Columns.Cast<DataColumn>().Select(x => x.ColumnName).ToArray();
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        @foreach (string strHead in theads)
+                        {
+                            <th>@strHead</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (DataRow dr in dt.Rows)
+                    {
+                        <tr>
+                            @foreach (string strHead in theads)
+                            {
+                                <td>
+                                    @{
+                                        if (strHead == "ID")
+                                        {
+                                            <label>@dr[strHead].ToString()</label>
+                                        }
+                                        else if (strHead == "Name")
+                                        {
+                                            <label>@dr[strHead].ToString()</label>
+                                        }
+                                        else if (strHead == "Gender")
+                                        {
+                                            <label>@dr[strHead].ToString()</label>
+                                        }
+                                        else if (strHead == "Email ID")
+                                        {
+                                            <label>@dr[strHead].ToString()</label>
+                                        }
+                                        else if (strHead == "Phone Number")
+                                        {
+                                            <label>@dr[strHead].ToString()</label>
+                                        }
+                                        else if (strHead == "Address")
+                                        {
+                                            <label>@dr[strHead].ToString()</label>
+                                        }
+                                        else if (strHead == "Indian")
+                                        {
+                                            <label>@dr[strHead].ToString()</label>
+                                        }
+                                        else if (strHead == "Hobbies")
+                                        {
+                                            List<string> hobbies = (List<string>)dr[strHead];
+                                            <ul>
+                                                @foreach (string strHobb in hobbies)
+                                                {
+                                                    <li>
+                                                        @strHobb
+                                                    </li>
+                                                }
+                                            </ul>
+
+                                        }
+                                        else if (strHead == "Profile Picture")
+                                        {
+                                            <img src=@dr[strHead].ToString() alt=@strHead width="100" height="100" />
+                                        }
+                                        else if (strHead == "Edit")
+                                        {
+                                            <a href="/Users/EditUser/@dr["ID"]"><span class="far fa-edit"></span></a>
+                                        }
+                                        else if (strHead == "Delete")
+                                        {
+                                            <a href="/Users/DeleteUser/@dr["ID"]"><span class="far fa-trash-alt UserDelete"></span></a>
+                                        }
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
+}
+
+<script>
+    $(document).ready(function () {
+        $(".UserDelete").on('click', function () {
+            return confirm('Are you sure want to delete user?');
+        })
+    })
+</script>
+
+<!-- Commented the css of table
+
+@*<table class="table table-hover">
     <thead>
         <tr>
             <th>ID</th>
@@ -30,7 +135,7 @@
     <tbody>
         <tr>
             <th>1</th>
-            <td><img src="~/Docs/UploadsDocs/Sample.jpg" alt="DP" width="100px" height="100px"></td>
+            <td><img src="~/Docs/UploadsDocs/Sample.jpg" alt="DP" width="100" height="100"></td>
             <td>Anil</td>
             <td>8369813729</td>
             <td>
@@ -74,4 +179,5 @@
             <td><i class='far'>&#xf2ed;</i></td>
         </tr>
     </tbody>
-</table>
+</table>*@
+    -->

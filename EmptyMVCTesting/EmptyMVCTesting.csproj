@@ -132,6 +132,8 @@
     <Content Include="Views\Shared\_LayoutForUsersDetails.cshtml" />
     <Content Include="Views\UsersDetails\UsersHome.cshtml" />
     <Content Include="Views\UsersDetails\RegisterUser.cshtml" />
+    <Content Include="Views\UsersDetails\UsersDetails.cshtml" />
+    <Content Include="Views\UsersDetails\EditUserDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
