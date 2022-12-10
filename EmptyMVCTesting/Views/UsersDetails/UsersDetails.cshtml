@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "UsersDetails";
+    Layout = "~/Views/Shared/_LayoutForUsersDetails.cshtml";
+}
+<style>
+    img {
+        display: inline-block;
+        /*width: 150px;
+        height: 150px;*/
+        border-radius: 50%;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+    }
+</style>
+<h2>UsersDetails</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Profile Picture</th>
+            <th>Name</th>
+            <th>Phone No</th>
+            <th>Hobbies</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>1</th>
+            <td><img src="~/Docs/UploadsDocs/Sample.jpg" alt="DP" width="100px" height="100px"></td>
+            <td>Anil</td>
+            <td>8369813729</td>
+            <td>
+                <ul>
+                    <li>Coffee</li>
+                    <li>Tea</li>
+                    <li>Milk</li>
+                </ul>
+            </td>
+            <td><span class="far fa-edit"></span></td>
+            <td><span class="far fa-trash-alt"></span></td>
+        </tr>
+        <tr>
+            <th>2</th>
+            <td><img src="~/Docs/UploadsDocs/Sample.jpg" alt="DP" width="100px" height="100px"></td>
+            <td>Nil</td>
+            <td>8369813729</td>
+            <td>
+                <ul>
+                    <li>Coffee</li>
+                    <li>Tea</li>
+                    <li>Milk</li>
+                    <li>Choclates</li>
+                </ul>
+            </td>
+            <td><span class="far fa-edit"></span></td>
+            <td><span class="far fa-trash-alt"></span></td>
+        </tr>
+        <tr>
+            <th>3</th>
+            <td><img src="~/Docs/UploadsDocs/Sample.jpg" alt="DP" width="100px" height="100px"></td>
+            <td>Nilu</td>
+            <td>8369813729</td>
+            <td>
+                <ul>
+                    <li>Coffee</li>
+                    <li>Milk</li>
+                </ul>
+            </td>
+            <td><i class='far'>&#xf044;</i></td>
+            <td><i class='far'>&#xf2ed;</i></td>
+        </tr>
+    </tbody>
+</table>

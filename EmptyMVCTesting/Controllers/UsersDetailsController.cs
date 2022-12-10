@@ -31,6 +31,7 @@ namespace EmptyMVCTesting.Controllers
         #region Commented TempData because of some issue by Anil
         //public UsersDetailsController()
         //{
+        //    #region Commented TempData because of some issue by Anil
         //    if (TempData["UserDetailsTable"] == null)
         //    {
         //        UserDetailsTableColumns();//For Table Structure
@@ -42,7 +43,8 @@ namespace EmptyMVCTesting.Controllers
         //    }
         //    else
         //        dt = (DataTable)TempData.Peek("UserDetailsTable");
-        //} 
+        //    #endregion
+        //}
         #endregion
 
         public void UserDetailsTableColumns()
@@ -70,8 +72,8 @@ namespace EmptyMVCTesting.Controllers
 
         public void UserDetailsTableColumnsValuesDef()
         {
-            dt.Rows.Add(null, "Anil", "Gawade", "1", "anil@vieva.in", "9757203681", "Powai,Mumbai 400072",
-                    "2", "Games", "YES");
+            dt.Rows.Add(null, "Anil", "Gawade", 1, "anil@vieva.in", "9757203681", "Powai,Mumbai 400072",
+                    2, "Games", "Football,Cricket,Video Games");
 
             #region Commented
             //DataRow dr = dt.NewRow();
@@ -262,6 +264,94 @@ namespace EmptyMVCTesting.Controllers
             }
 
             return View("RegisterUser",UD);
+        }
+
+        [Route("AllUsers")]
+        public ActionResult GetAllUserDetails()
+        {
+            UserDetails UD=new UserDetails();
+
+            if (Session["UserDetailsTable"] == null)
+            {
+                UserDetailsTableColumns();//For Table Structure
+                //UserDetailsTableColumnsValues();//For Sample Data Pass Parameters to it
+                UserDetailsTableColumnsValuesDef();//For Testing Sample data
+
+                Session["UserDetailsTable"] = dt;
+            }
+            else
+                dt = (DataTable)Session["UserDetailsTable"];
+
+            DataTable AllUsersDt=new DataTable();
+            AllUsersDt.Columns.Add("UsersID", typeof(int));
+            AllUsersDt.Columns.Add("UsersFullName", typeof(string));
+            AllUsersDt.Columns.Add("UsersGender", typeof(string));
+            AllUsersDt.Columns.Add("UsersEmailID", typeof(string));
+            AllUsersDt.Columns.Add("UsersPhoneNo", typeof(string));
+            AllUsersDt.Columns.Add("UsersAddress", typeof(string));
+            AllUsersDt.Columns.Add("UsersIsIndian", typeof(string));
+            AllUsersDt.Columns.Add("UsersHobbies", typeof(List<string>));
+            AllUsersDt.Columns.Add("UsersProfilePic", typeof(string));
+
+            //dt.Columns.Add("U_ID", typeof(int));
+            //dt.Columns["U_ID"].AutoIncrement = true;
+            //dt.Columns["U_ID"].AutoIncrementSeed = 1; dt.Columns["U_ID"].AutoIncrementStep = 1;
+
+            //dt.Columns.Add("U_FName", typeof(string));
+            //dt.Columns.Add("U_LName", typeof(string));
+            //dt.Columns.Add("U_Gen", typeof(int));
+            //dt.Columns.Add("U_EId", typeof(string));
+            //dt.Columns.Add("U_PhNo", typeof(string));
+            //dt.Columns.Add("U_Address", typeof(string));
+            //dt.Columns.Add("U_Indian", typeof(int));
+            //dt.Columns.Add("U_Hobbies", typeof(string));
+            //dt.Columns.Add("U_ProfilePic", typeof(string));
+
+            if (dt!= null)
+                foreach (DataRow dr in dt.Rows)
+                {
+                    DataRow UsersDet=AllUsersDt.NewRow();
+                    string UsersGender=string.Empty;
+                    string UsersIsIndian=string.Empty;
+                    List<string> Hobbies=new List<string>();
+
+                    UsersDet["UsersID"] = (int)dr["U_ID"];
+                    UsersDet["UsersFullName"] = dr["U_FName"].ToString().Trim() +" "+ dr["U_LName"].ToString().Trim();
+                    //UsersDet["UsersGender"] = (int)dr["U_Gen"];
+                    UsersDet["UsersEmailID"] = dr["U_EId"];
+                    UsersDet["UsersPhoneNo"] = dr["U_PhNo"];
+                    UsersDet["UsersAddress"] = dr["U_Address"];
+                    //UsersDet["UsersIsIndian"] = dr["U_Indian"];
+                    //UsersDet["UsersHobbies"] = dr["U_Hobbies"];
+                    UsersDet["UsersProfilePic"] = dr["U_ProfilePic"];
+                    
+                    foreach(Gender str in UD.GenderList)
+                    {
+                        if (((int)(dr["U_Gen"]) == str.ID))
+                            UsersGender = str.Type;
+                    }
+                    UsersDet["UsersGender"] = UsersGender;
+
+                    foreach (Indian str in UD.IndianList)
+                    {
+                        if (((int)dr["U_Indian"]) == str.ID)
+                            UsersIsIndian = str.Name;
+                    }
+                    UsersDet["UsersIsIndian"] = UsersIsIndian;
+
+                    string U_Hobbies = dr["U_Hobbies"].ToString();
+                    Hobbies = U_Hobbies.Split(',').ToList();
+
+                    UsersDet["UsersHobbies"]=Hobbies;
+
+                    AllUsersDt.Rows.Add(UsersDet);
+
+                    ViewBag.AllUsersDt = AllUsersDt;
+                }
+
+                
+
+            return View("UsersDetails");
         }
     }
 }
