@@ -1,4 +1,4 @@
-﻿
+﻿@model EmptyMVCTesting.Models.UserDetails
 @{
     ViewBag.Title = "EditUserDetails";
     Layout = "~/Views/Shared/_LayoutForUsersDetails.cshtml";
@@ -8,5 +8,95 @@
 <hr />
 @using (Html.BeginForm())
 {
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_FName, new { @for = "txtUFName" })
+        @Html.TextBoxFor(m => m.U_FName, new { id = "txtUFName", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.U_FName)
+    </div>
 
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_LName, new { @for = "txtULName" })
+        @Html.TextBoxFor(m => m.U_LName, new { id = "txtULName", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.U_LName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_Gen, new { @for = "txtUGen" })
+        @{
+            foreach (var Gender in Model.GenderList)
+            {
+                <div class="form-check">
+                    @Html.RadioButtonFor(m => m.U_Gen, Gender.ID, new { id = "rbtn" + Gender.Type, @class = "form-check-input" })
+                    @Html.Label(Gender.Type, new { @for = "rbtn" + Gender.Type })
+                </div>
+            }
+        }
+        @Html.ValidationMessageFor(m => m.U_Gen)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_EId, new { @for = "txtUEId" })
+        @Html.TextBoxFor(m => m.U_EId, new { id = "txtUEId", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.U_EId)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_PhNo, new { @for = "txtUPhNo" })
+        @Html.TextBoxFor(m => m.U_PhNo, new { id = "txtUPhNo", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.U_PhNo)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_Address, new { @for = "txtUAddress" })
+        @Html.TextAreaFor(m => m.U_Address, new { id = "txtUAddress", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.U_Address)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_Indian)
+        @Html.DropDownListFor(m => m.U_Indian, new SelectList(Model.IndianList, "ID", "Name"),
+            new { id = "drpUIndian", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.U_Indian)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.U_Hobbies)
+        @{ 
+            string[] selectedhobbies = ViewBag.Hobbies;
+
+            for (int i = 0; i < Model.HobbyList.Count; i++)
+            {
+                foreach(string str in selectedhobbies)
+                {
+                    //if (Model.HobbyList[i].Name == str)
+                    //{
+                    //    Model.HobbyList[i].Checked = true;
+                    //}
+                }
+
+                <div class="form-check">
+                    @Html.HiddenFor(m => m.HobbyList[i].ID)
+                    @Html.HiddenFor(m => m.HobbyList[i].Name)
+                    @Html.CheckBoxFor(m => m.HobbyList[i].Checked, new { id = "chkUHobbie" + Model.HobbyList[i].ID })
+                    @Html.LabelFor(m => m.HobbyList[i], Model.HobbyList[i].Name, new { @for = "chkUHobbie" + Model.HobbyList[i].ID })
+                </div>
+            }
+        }
+        @Html.ValidationMessageFor(m => m.U_Hobbies)
+    </div>
+
+    <div class="custom-file">
+        @Html.LabelFor(m => m.U_ProfilePic, new { @for = "fileUpDoc", @class = "custom-file-label" })
+        @Html.HiddenFor(m => m.U_ProfilePic, new { id = "hiddenUProfilePic" })
+        @Html.TextBoxFor(m => m.U_ProfilePic, new { id = "fileUpDoc", type = "file", @class = "custom-file-input" })
+        @Html.TextBox("btnDocUpload", "Upload Document", new { id = "btnUpDoc", type = "button", @style = "display:none;" })
+        @Html.ValidationMessageFor(m => m.U_ProfilePic)
+    </div>
+
+    <br />
+    @Html.HiddenFor(m=>m.U_ID)
+    <br />
+    <div class="form-group">
+        @Html.TextBox("Submit", "Update User", new { id = "btnSubmit", type = "submit", @class = "btn btn-outline-primary" })<br /><br />
+    </div>
 }

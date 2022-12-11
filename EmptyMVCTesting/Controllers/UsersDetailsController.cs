@@ -358,10 +358,37 @@ namespace EmptyMVCTesting.Controllers
 
             DataRow dr = dt.AsEnumerable().FirstOrDefault(x => x.Field<int>("U_ID") == ID);
 
-            
+            UserDetails UD = new UserDetails();
+            UD.U_ID = (int)dr["U_ID"];
+            UD.U_FName = dr["U_FName"].ToString();
+            UD.U_LName = dr["U_LName"].ToString();
+            UD.U_Gen = (int)dr["U_Gen"];
+            UD.U_EId = dr["U_EId"].ToString();
+            UD.U_PhNo = dr["U_PhNo"].ToString();
+            UD.U_Address = dr["U_Address"].ToString();
+            UD.U_Indian = (int)dr["U_Indian"];
+            UD.U_Hobbies = dr["U_Hobbies"].ToString();
+            UD.U_ProfilePic = dr["U_Address"].ToString();
+
+            U_Hobbies= dr["U_Hobbies"].ToString();
+            string[] Hobbies = U_Hobbies.Split(',');
+
+            foreach(Hobby obj in UD.HobbyList)
+            {
+                foreach(string str in Hobbies)
+                {
+                    if (obj.Name == str)
+                    {
+                        obj.Checked=true;
+                    }
+                }
+            }
+
+            ViewBag.Hobbies = Hobbies;
+
             Session["UserDetailsTable"] = dt;
 
-            return View("EditUserDetails");
+            return View("EditUserDetails",UD);
         }
 
         [HttpPost]
