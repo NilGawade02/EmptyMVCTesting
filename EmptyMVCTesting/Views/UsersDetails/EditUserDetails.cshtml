@@ -6,7 +6,7 @@
 
 <h2>EditUserDetails</h2>
 <hr />
-@using (Html.BeginForm())
+@using (Html.BeginForm("UpdateUser","Users",FormMethod.Post))
 {
     <div class="form-group">
         @Html.LabelFor(m => m.U_FName, new { @for = "txtUFName" })

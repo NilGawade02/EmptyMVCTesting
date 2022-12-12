@@ -368,7 +368,7 @@ namespace EmptyMVCTesting.Controllers
             UD.U_Address = dr["U_Address"].ToString();
             UD.U_Indian = (int)dr["U_Indian"];
             UD.U_Hobbies = dr["U_Hobbies"].ToString();
-            UD.U_ProfilePic = dr["U_Address"].ToString();
+            UD.U_ProfilePic = dr["U_ProfilePic"].ToString();
 
             U_Hobbies= dr["U_Hobbies"].ToString();
             string[] Hobbies = U_Hobbies.Split(',');
@@ -392,9 +392,66 @@ namespace EmptyMVCTesting.Controllers
         }
 
         [HttpPost]
-        [Route("UpdateUser/{ID}")]
+        [Route("UpdateUser")]
         public ActionResult EditUserDetails(UserDetails UD)
         {
+            if (Session["UserDetailsTable"] != null)
+                dt = (DataTable)Session["UserDetailsTable"];
+            else
+                return RedirectToAction("AllUsers", "Users");
+
+            dt.AcceptChanges();
+
+            if (ModelState.IsValid)
+            {
+                U_ID=UD.U_ID;
+                U_FName = UD.U_FName;
+                U_LName = UD.U_LName;
+                U_Gen = UD.U_Gen;
+                U_EId = UD.U_EId;
+                U_PhNo = UD.U_PhNo;
+                U_Address = UD.U_Address;
+                U_Indian = UD.U_Indian;
+                //U_Hobbies = UD.U_Hobbies;
+                U_ProfilePic = UD.U_ProfilePic;
+
+                int i = 1;
+                foreach (Hobby obj in UD.HobbyList)
+                {
+                    if (obj.Checked == true)
+                    {
+                        if (i == 1)
+                            U_Hobbies = obj.Name;
+                        else
+                            U_Hobbies += "," + obj.Name;
+                        i++;
+                    }
+
+                }
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    if ((int)dr["U_ID"] == U_ID)
+                    {
+                        dr["U_ID"] = UD.U_ID;
+                        dr["U_FName"] = UD.U_FName;
+                        dr["U_LName"] = UD.U_LName;
+                        dr["U_Gen"] = UD.U_Gen;
+                        dr["U_EId"] = UD.U_EId;
+                        dr["U_PhNo"] = UD.U_PhNo;
+                        dr["U_Address"] = UD.U_Address;
+                        dr["U_Hobbies"] = U_Hobbies;
+                        dr["U_ProfilePic"] = UD.U_ProfilePic;
+                    }
+                }
+
+                dt.AcceptChanges();
+
+                Session["UserDetailsTable"] = dt;
+
+                return RedirectToAction("Home", "Users");
+            }
+
             return View();
         }
 
