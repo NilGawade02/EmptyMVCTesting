@@ -10,6 +10,7 @@ using System.Web.Script.Serialization;
 
 namespace EmptyMVCTesting.Controllers
 {
+    [RoutePrefix("DataFrmViewToCon")]
     public class DataFrmViewToConController : Controller
     {
         [HttpGet]
@@ -19,7 +20,15 @@ namespace EmptyMVCTesting.Controllers
         }
 
         [HttpPost]
+        [Route("SubmitDataUaingParameters/{ID:alpha}/{Name:alpha}")]
         public string SubmitDataUaingParameters(string ID, string Name)
+        {
+            return "Data Using Parameters ID is " + ID + ", Name is " + Name;
+        }
+
+        [HttpPost]
+        [Route("SubmitDataUaingParameters/{ID:int}/{Name:int}")]
+        public string SubmitDataUaingParameters(int ID, int Name)
         {
             return "Data Using Parameters ID is " + ID + ", Name is " + Name;
         }
